@@ -25,9 +25,9 @@ class Graph:
         Add a directed edge to the graph.
         """
         if self.vertices.get(v1) is None:
-            raise KeyError(f"Unknown vertex: {v1}")
+            raise KeyError(v1)
         elif self.vertices.get(v2) is None:
-            raise KeyError(f"Unknown vertex: {v2}")
+            raise KeyError(v2)
         else:
             self.vertices[v1].add(v2)
 
@@ -35,14 +35,30 @@ class Graph:
         """
         Get all neighbors (edges) of a vertex.
         """
-        pass  # TODO
+        neighbors = self.vertices.get(vertex_id)
+        if neighbors is None:
+            raise KeyError(vertex_id)
+        return neighbors
 
     def bft(self, starting_vertex):
         """
         Print each vertex in breadth-first order
         beginning from starting_vertex.
         """
-        pass  # TODO
+        node_queue = Queue()
+        visited = set()
+
+        node_queue.enqueue(starting_vertex)
+
+        while node_queue.size() > 0:
+            current = node_queue.dequeue()
+            if current in visited:
+                continue
+            print(current)
+            visited.add(current)
+            for node in self.get_neighbors(current):
+                node_queue.enqueue(node)
+        
 
     def dft(self, starting_vertex):
         """
