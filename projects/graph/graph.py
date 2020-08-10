@@ -64,7 +64,19 @@ class Graph:
         Print each vertex in depth-first order
         beginning from starting_vertex.
         """
-        self.dft_recursive(starting_vertex)
+        node_stack = Stack()
+        visited = set()
+
+        node_stack.push(starting_vertex)
+
+        while node_stack.size() > 0:
+            current = node_stack.pop()
+            if current in visited:
+                continue
+            print(current)
+            visited.add(current)
+            for node in self.get_neighbors(current):
+                node_stack.push(node)
 
     def dft_recursive(self, starting_vertex):
         """
@@ -93,7 +105,7 @@ class Graph:
         breath-first order.
         """
         pass  # TODO
-
+        # 
     def dfs(self, starting_vertex, destination_vertex):
         """
         Return a list containing a path from
@@ -111,7 +123,6 @@ class Graph:
         This should be done using recursion.
         """
         pass  # TODO
-
 
 if __name__ == '__main__':
     graph = Graph()  # Instantiate your graph
@@ -164,8 +175,8 @@ if __name__ == '__main__':
         1, 2, 4, 7, 6, 3, 5
         1, 2, 4, 6, 3, 5, 7
     '''
-    graph.dft(1)
-    graph.dft_recursive(1)
+    # graph.dft(1)
+    # graph.dft_recursive(1)
 
     '''
     Valid BFS path:
