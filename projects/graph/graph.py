@@ -3,9 +3,11 @@ Simple graph implementation
 """
 from util import Stack, Queue  # These may come in handy
 
+
 class Graph:
 
     """Represent a graph as a dictionary of vertices mapping labels to edges."""
+
     def __init__(self):
         self.vertices = {}
 
@@ -13,13 +15,21 @@ class Graph:
         """
         Add a vertex to the graph.
         """
-        pass  # TODO
+        if self.vertices.get(vertex_id) is not None:
+            raise NameError(f"Identifier {vertex_id} already in use")
+        else:
+            self.vertices[vertex_id] = set()
 
     def add_edge(self, v1, v2):
         """
         Add a directed edge to the graph.
         """
-        pass  # TODO
+        if self.vertices.get(v1) is None:
+            raise KeyError(f"Unknown vertex: {v1}")
+        elif self.vertices.get(v2) is None:
+            raise KeyError(f"Unknown vertex: {v2}")
+        else:
+            self.vertices[v1].add(v2)
 
     def get_neighbors(self, vertex_id):
         """
@@ -75,6 +85,7 @@ class Graph:
         This should be done using recursion.
         """
         pass  # TODO
+
 
 if __name__ == '__main__':
     graph = Graph()  # Instantiate your graph
