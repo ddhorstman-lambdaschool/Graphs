@@ -2,10 +2,13 @@
 
 ## Contents
 
-* [What is a Graph?](#q100)
-* [Why is it important to learn Graphs?](#q101)
-* [How many types of graphs are there?](#q102)
-* [What is the time complexity (big-O) to add/remove/get a vertex/edge for a graph?](#q103)
+- [Graphs FAQ](#graphs-faq)
+  - [Contents](#contents)
+  - [Questions](#questions)
+    - [What is a Graph?](#what-is-a-graph)
+    - [Why is it important to learn Graphs?](#why-is-it-important-to-learn-graphs)
+    - [How many types of graphs are there?](#how-many-types-of-graphs-are-there)
+    - [What is the time complexity (big-O) to add/remove/get a vertex/edge for a graph?](#what-is-the-time-complexity-big-o-to-addremoveget-a-vertexedge-for-a-graph)
 
 
 ## Questions
