@@ -144,7 +144,7 @@ class Graph:
         """
         return self.dfs_recursive(starting_vertex, destination_vertex)
 
-    def dfs_recursive(self, current, destination, path=[], visited=set()):
+    def dfs_recursive(self, current, destination, path=None, visited=None):
         """
         Return a list containing a path from
         starting_vertex to destination_vertex in
@@ -154,6 +154,13 @@ class Graph:
         """
         if destination not in self.vertices:
             raise KeyError(destination)
+
+        # Providing default values in the function definition doesn't work,
+        # as the defaults will be mutated the first time the function is called.
+        # Hence it's necessary to default them to None
+        # and provide a new empty array or set as fallback inside the function body.
+        path = path or []
+        visited = visited or set()
 
         if current == destination:
             path.append(current)
@@ -235,12 +242,12 @@ if __name__ == '__main__':
     Valid BFS path:
         [1, 2, 4, 6]
     '''
-    print(graph.bfs(1, 6))
+    # print(graph.bfs(1, 6))
 
     '''
     Valid DFS paths:
         [1, 2, 4, 6]
         [1, 2, 4, 7, 6]
     '''
-    # print(graph.dfs(1, 6))
+    print(graph.dfs(1, 6))
     print(graph.dfs_recursive(1, 6))
