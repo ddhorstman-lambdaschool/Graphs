@@ -104,6 +104,39 @@ class Graph:
         starting_vertex to destination_vertex in
         breath-first order.
         """
+        class BFS_Path:
+            def __init__(self, value, target, path=[], visited=set()):
+                self.value = value
+                self.target = target
+                self.path = [*path]
+                self.visited = {*visited}
+
+            def get_values(self):
+                return [self.value, self.target, self.path, self.visited]
+        # Keep track of all the paths we've traversed
+        # For each neighbor, see if it's the destination
+        # If it is, we're done
+        # If not, start a potential path branching from that neighbor
+
+        node_queue = Queue()
+        node_queue.enqueue(BFS_Path(starting_vertex, destination_vertex))
+
+        while node_queue.size() > 0:
+            current = node_queue.dequeue()
+            value, target, path, visited = current.get_values()
+            if value in visited:
+                continue
+
+            path.append(value)
+            visited.add(value)
+
+            if value == target:
+                return path
+
+            for node in self.get_neighbors(value):
+                node_queue.enqueue(BFS_Path(node, target, path, visited))
+        else:
+            return None
 
     def dfs(self, starting_vertex, destination_vertex):
         """
@@ -204,7 +237,7 @@ if __name__ == '__main__':
     Valid BFS path:
         [1, 2, 4, 6]
     '''
-    # print(graph.bfs(1, 6))
+    print(graph.bfs(1, 6))
 
     '''
     Valid DFS paths:
@@ -212,4 +245,4 @@ if __name__ == '__main__':
         [1, 2, 4, 7, 6]
     '''
     # print(graph.dfs(1, 6))
-    print(graph.dfs_recursive(1, 6))
+    # print(graph.dfs_recursive(1, 6))
