@@ -108,8 +108,8 @@ class Graph:
             def __init__(self, value, target, path=[], visited=set()):
                 self.value = value
                 self.target = target
-                self.path = [*path]
-                self.visited = {*visited}
+                self.path = path
+                self.visited = visited
 
             def get_values(self):
                 return [self.value, self.target, self.path, self.visited]
@@ -134,7 +134,7 @@ class Graph:
                 return path
 
             for node in self.get_neighbors(value):
-                node_queue.enqueue(BFS_Path(node, target, path, visited))
+                node_queue.enqueue(BFS_Path(node, target, [*path], {*visited}))
         else:
             return None
 
