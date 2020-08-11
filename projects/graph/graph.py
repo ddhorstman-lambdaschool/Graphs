@@ -113,17 +113,13 @@ class Graph:
 
             def get_values(self):
                 return [self.value, self.target, self.path, self.visited]
-        # Keep track of all the paths we've traversed
-        # For each neighbor, see if it's the destination
-        # If it is, we're done
-        # If not, start a potential path branching from that neighbor
 
         node_queue = Queue()
         node_queue.enqueue(BFS_Path(starting_vertex, destination_vertex))
 
         while node_queue.size() > 0:
-            current = node_queue.dequeue()
-            value, target, path, visited = current.get_values()
+            value, target, path, visited = node_queue.dequeue().get_values()
+
             if value in visited:
                 continue
 
@@ -134,7 +130,9 @@ class Graph:
                 return path
 
             for node in self.get_neighbors(value):
-                node_queue.enqueue(BFS_Path(node, target, [*path], {*visited}))
+                # Give each path its own copy of the traversal path
+                # To avoid dead ends modifying a shared copy
+                node_queue.enqueue(BFS_Path(node, target, [*path], visited))
         else:
             return None
 
@@ -168,10 +166,10 @@ class Graph:
                 result = self.dfs_recursive(
                     neighbor,
                     destination,
-                    # These must be copied rather than passed directly
+                    # This must be copied rather than passed directly
                     # Or else dead-end paths will modify the shared copy
                     [*path],
-                    {*visited},
+                    visited,
                 )
                 if result is not None:
                     return result
@@ -245,4 +243,4 @@ if __name__ == '__main__':
         [1, 2, 4, 7, 6]
     '''
     # print(graph.dfs(1, 6))
-    # print(graph.dfs_recursive(1, 6))
+    print(graph.dfs_recursive(1, 6))
