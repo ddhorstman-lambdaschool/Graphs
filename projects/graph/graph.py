@@ -105,7 +105,8 @@ class Graph:
         breath-first order.
         """
         pass  # TODO
-        # 
+        #
+
     def dfs(self, starting_vertex, destination_vertex):
         """
         Return a list containing a path from
@@ -122,7 +123,42 @@ class Graph:
 
         This should be done using recursion.
         """
-        pass  # TODO
+        
+        if destination_vertex not in self.vertices:
+            raise KeyError(destination_vertex)
+        
+        paths = []
+        def search(current, destination, path=None, visited=None):
+            nonlocal paths
+            # Initialize empty path, or create a copy of what was passed in
+            path = [] if path is None else [*path]
+            # Init visited, or create a copy
+            visited = set() if visited is None else {*visited}
+
+            # If we found it, add the path to paths
+            if current == destination:
+                path.append(current)
+                paths.append(path)
+                return
+            # If we've already been here, stop recursing
+            elif current in visited:
+                return
+            # Add this node to our path and visited list
+            # Then keep checking all of its neighbors
+            else:
+                visited.add(current)
+                path.append(current)
+                for node in self.get_neighbors(current):
+                    search(node, destination, path, visited)
+
+        search(starting_vertex, destination_vertex)
+        # Once we've found all paths, find and return the shortest one
+        shortest_path = paths[0]
+        for path in paths:
+            if len(path) < len(shortest_path):
+                shortest_path = path
+        return shortest_path
+
 
 if __name__ == '__main__':
     graph = Graph()  # Instantiate your graph
@@ -190,4 +226,4 @@ if __name__ == '__main__':
         [1, 2, 4, 7, 6]
     '''
     # print(graph.dfs(1, 6))
-    # print(graph.dfs_recursive(1, 6))
+    print(graph.dfs_recursive(1, 6))
