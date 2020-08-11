@@ -16,7 +16,7 @@ class Graph:
         Add a vertex to the graph.
         """
         if self.vertices.get(vertex_id) is not None:
-            raise NameError(f"Identifier {vertex_id} already in use")
+            raise ValueError(f"Identifier {vertex_id} already in use")
         else:
             self.vertices[vertex_id] = set()
 
@@ -104,8 +104,6 @@ class Graph:
         starting_vertex to destination_vertex in
         breath-first order.
         """
-        pass  # TODO
-        #
 
     def dfs(self, starting_vertex, destination_vertex):
         """
@@ -113,9 +111,9 @@ class Graph:
         starting_vertex to destination_vertex in
         depth-first order.
         """
-        pass  # TODO
+        return self.dfs_recursive(starting_vertex, destination_vertex)
 
-    def dfs_recursive(self, starting_vertex, destination_vertex):
+    def dfs_recursive(self, current, destination, path=[], visited=set()):
         """
         Return a list containing a path from
         starting_vertex to destination_vertex in
@@ -123,41 +121,29 @@ class Graph:
 
         This should be done using recursion.
         """
-        
-        if destination_vertex not in self.vertices:
-            raise KeyError(destination_vertex)
-        
-        paths = []
-        def search(current, destination, path=None, visited=None):
-            nonlocal paths
-            # Initialize empty path, or create a copy of what was passed in
-            path = [] if path is None else [*path]
-            # Init visited, or create a copy
-            visited = set() if visited is None else {*visited}
+        if destination not in self.vertices:
+            raise KeyError(destination)
 
-            # If we found it, add the path to paths
-            if current == destination:
-                path.append(current)
-                paths.append(path)
-                return
-            # If we've already been here, stop recursing
-            elif current in visited:
-                return
-            # Add this node to our path and visited list
-            # Then keep checking all of its neighbors
-            else:
-                visited.add(current)
-                path.append(current)
-                for node in self.get_neighbors(current):
-                    search(node, destination, path, visited)
+        if current == destination:
+            path.append(current)
+            return path
 
-        search(starting_vertex, destination_vertex)
-        # Once we've found all paths, find and return the shortest one
-        shortest_path = paths[0]
-        for path in paths:
-            if len(path) < len(shortest_path):
-                shortest_path = path
-        return shortest_path
+        elif current not in visited:
+            visited.add(current)
+            path.append(current)
+            for neighbor in self.get_neighbors(current):
+                result = self.dfs_recursive(
+                    neighbor,
+                    destination,
+                    # These must be copied rather than passed directly
+                    # Or else dead-end paths will modify the shared copy
+                    [*path],
+                    {*visited},
+                )
+                if result is not None:
+                    return result
+        else:
+            return None
 
 
 if __name__ == '__main__':
