@@ -1,6 +1,10 @@
+from random import randrange
+
+
 class User:
     def __init__(self, name):
         self.name = name
+
 
 class SocialGraph:
     def __init__(self):
@@ -13,9 +17,9 @@ class SocialGraph:
         Creates a bi-directional friendship
         """
         if user_id == friend_id:
-            print("WARNING: You cannot be friends with yourself")
+            raise ValueError("WARNING: You cannot be friends with yourself")
         elif friend_id in self.friendships[user_id] or user_id in self.friendships[friend_id]:
-            print("WARNING: Friendship already exists")
+            raise ValueError("WARNING: Friendship already exists")
         else:
             self.friendships[user_id].add(friend_id)
             self.friendships[friend_id].add(user_id)
@@ -45,8 +49,18 @@ class SocialGraph:
         # !!!! IMPLEMENT ME
 
         # Add users
-
+        for i in range(num_users):
+            self.add_user(f"User {i}")
         # Create friendships
+        remaining_friendships = num_users * avg_friendships // 2
+        while remaining_friendships > 0:
+            x = randrange(1, num_users+1)
+            y = randrange(1, num_users+1)
+            try:
+                self.add_friendship(x, y)
+                remaining_friendships -= 1
+            except ValueError:
+                continue
 
     def get_all_social_paths(self, user_id):
         """
