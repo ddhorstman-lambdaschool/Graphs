@@ -1,4 +1,6 @@
 from random import randint
+from statistics import mean
+
 
 class User:
     def __init__(self, name):
@@ -77,13 +79,19 @@ class SocialGraph:
             if current_user not in visited:
                 visited[current_user] = path
                 for friend in self.friendships[current_user]:
-                    queue.append([*path,friend])
+                    queue.append([*path, friend])
         return visited
 
 
 if __name__ == '__main__':
+    percentages = []
+    path_lengths = []
     sg = SocialGraph()
-    sg.populate_graph(10, 2)
-    print(sg.friendships)
-    connections = sg.get_all_social_paths(1)
-    print(connections)
+    for _ in range(1000):
+        sg.populate_graph(1000, 5)
+        # print(sg.friendships)
+        connections = sg.get_all_social_paths(1)
+        percentages.append(len(connections)/1000)
+        path_lengths.append(mean([len(x) for x in connections.values()]))
+    print(f"Percentage: {mean(percentages)*100:.1f}%")
+    print(f"Degrees of Separation: {mean(path_lengths):.1f}")
