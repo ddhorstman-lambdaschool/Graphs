@@ -1,5 +1,4 @@
-from random import randrange
-
+from random import randint
 
 class User:
     def __init__(self, name):
@@ -17,9 +16,9 @@ class SocialGraph:
         Creates a bi-directional friendship
         """
         if user_id == friend_id:
-            raise ValueError("WARNING: You cannot be friends with yourself")
+            raise ValueError("You cannot be friends with yourself")
         elif friend_id in self.friendships[user_id] or user_id in self.friendships[friend_id]:
-            raise ValueError("WARNING: Friendship already exists")
+            raise ValueError("Friendship already exists")
         else:
             self.friendships[user_id].add(friend_id)
             self.friendships[friend_id].add(user_id)
@@ -46,7 +45,6 @@ class SocialGraph:
         self.last_id = 0
         self.users = {}
         self.friendships = {}
-        # !!!! IMPLEMENT ME
 
         # Add users
         for i in range(num_users):
@@ -54,8 +52,8 @@ class SocialGraph:
         # Create friendships
         remaining_friendships = num_users * avg_friendships // 2
         while remaining_friendships > 0:
-            x = randrange(1, num_users+1)
-            y = randrange(1, num_users+1)
+            x = randint(1, num_users)
+            y = randint(1, num_users)
             try:
                 self.add_friendship(x, y)
                 remaining_friendships -= 1
@@ -72,7 +70,14 @@ class SocialGraph:
         The key is the friend's ID and the value is the path.
         """
         visited = {}  # Note that this is a dictionary, not a set
-        # !!!! IMPLEMENT ME
+        queue = [[user_id]]
+        while len(queue) > 0:
+            path = queue.pop(0)
+            current_user = path[-1]
+            if current_user not in visited:
+                visited[current_user] = path
+                for friend in self.friendships[current_user]:
+                    queue.append([*path,friend])
         return visited
 
 
