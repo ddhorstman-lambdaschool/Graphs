@@ -10,7 +10,7 @@ Your client is also interested in how the performance will scale as more users j
 
 It will be easier to build your extended social network if you have users to test it with. `populate_graph()` takes in a number of users to create and the average number of friends each user should have and creates them.
 
-```
+```py
 >>> sg = SocialGraph()
 >>> sg.populate_graph(10, 2)  # Creates 10 users with an average of 2 friends each
 >>> print(sg.friendships)
@@ -30,7 +30,7 @@ Note that in the above example, the average number of friendships is exactly 2 b
 
 Now that you have a graph full of users and friendships, you can crawl through their social graphs. `get_all_social_paths()` takes a userID and returns a dictionary containing every user in that user's extended network along with the shortest friendship path between each.
 
-```
+```py
 >>> sg = SocialGraph()
 >>> sg.populate_graph(10, 2)
 >>> print(sg.friendships)
@@ -48,13 +48,18 @@ Note that in this sample, Users 3, 4 and 9 are not in User 1's extended social n
 
 1. To create 100 users with an average of 10 friends each, how many times would you need to call `add_friendship()`? Why?
 
+> Since each friendship involves two people, you need to create `100 * 10 / 2` or 500 friendships.
+
 2. If you create 1000 users with an average of 5 random friends each, what percentage of other users will be in a particular user's extended social network? What is the average degree of separation between a user and those in his/her extended network?
 
-
+> Running the code, `99%` of users are in someone's extended network, with an average path length of `5.4` degrees of separation.
 
 ## 4. Stretch Goal
 
 1. You might have found the results from question #2 above to be surprising. Would you expect results like this in real life? If not, what are some ways you could improve your friendship distribution model for more realistic results?
 
+> In real life, people are more likely to have clustered friend groups based on region or other factors. It might yield more realistic results to split people into groups of some size and set up a number of random friendships within that group. Then extend with some random cross-group friendships.
+
 2. If you followed the hints for part 1, your `populate_graph()` will run in O(n^2) time. Refactor your code to run in O(n) time. Are there any tradeoffs that come with this implementation?
 
+> The main tradeoff of my implementation is that some time is wasted trying and failing to create invalid friendships.
